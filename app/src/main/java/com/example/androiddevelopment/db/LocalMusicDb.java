@@ -2,14 +2,8 @@ package com.example.androiddevelopment.db;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-import com.duzun.player.bean.LocalMusic;
-
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -75,52 +69,52 @@ public class LocalMusicDb {
      * 查找本地歌曲
      * @return
      */
-    public ArrayList<LocalMusic> queryAll(){
-
-        ArrayList<LocalMusic> musicList = new ArrayList<>();
-
-        Cursor cursor = openSQLiteDatabase().query(TABLENAME, null, null,
-                null, null, null, null);
-
-        while (cursor.moveToNext()){
-            int songNameIndex = cursor.getColumnIndex(SONGNAME);
-            int singerIndex = cursor.getColumnIndex(SINGER);
-            int albumIndex = cursor.getColumnIndex(ALBUM);
-            int timeIndex = cursor.getColumnIndex(TIME);
-            int urlIndex = cursor.getColumnIndex(URL);
-            int musicIconIndex = cursor.getColumnIndex(MUSICICON);
-            int isFromServerIndex = cursor.getColumnIndex(ISFROMSERVER);
-
-            String songName = cursor.getString(songNameIndex);
-            String singer = cursor.getString(singerIndex);
-            String album = cursor.getString(albumIndex);
-            String time = cursor.getString(timeIndex);
-            String url = cursor.getString(urlIndex);
-            int isFromServer = cursor.getInt(isFromServerIndex);
-            byte[] icon = cursor.getBlob(musicIconIndex);
-
-            LocalMusic music = new LocalMusic();
-            music.setSongName(songName);
-            music.setUrl(url);
-            music.setAlbumName(album);
-            music.setAuthor(singer);
-            music.setAllTime(time);
-
-            Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
-//            music.setAlbumImage(bitmap);
-
-            if(isFromServer==0){
-                music.setFromServer(false);
-            }else {
-                music.setFromServer(true);
-            }
-
-            musicList.add(music);
-        }
-        cursor.close();
-        closeDatabase();
-        return musicList;
-    }
+//    public ArrayList<LocalMusic> queryAll(){
+//
+//        ArrayList<LocalMusic> musicList = new ArrayList<>();
+//
+//        Cursor cursor = openSQLiteDatabase().query(TABLENAME, null, null,
+//                null, null, null, null);
+//
+//        while (cursor.moveToNext()){
+//            int songNameIndex = cursor.getColumnIndex(SONGNAME);
+//            int singerIndex = cursor.getColumnIndex(SINGER);
+//            int albumIndex = cursor.getColumnIndex(ALBUM);
+//            int timeIndex = cursor.getColumnIndex(TIME);
+//            int urlIndex = cursor.getColumnIndex(URL);
+//            int musicIconIndex = cursor.getColumnIndex(MUSICICON);
+//            int isFromServerIndex = cursor.getColumnIndex(ISFROMSERVER);
+//
+//            String songName = cursor.getString(songNameIndex);
+//            String singer = cursor.getString(singerIndex);
+//            String album = cursor.getString(albumIndex);
+//            String time = cursor.getString(timeIndex);
+//            String url = cursor.getString(urlIndex);
+//            int isFromServer = cursor.getInt(isFromServerIndex);
+//            byte[] icon = cursor.getBlob(musicIconIndex);
+//
+//            LocalMusic music = new LocalMusic();
+//            music.setSongName(songName);
+//            music.setUrl(url);
+//            music.setAlbumName(album);
+//            music.setAuthor(singer);
+//            music.setAllTime(time);
+//
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
+////            music.setAlbumImage(bitmap);
+//
+//            if(isFromServer==0){
+//                music.setFromServer(false);
+//            }else {
+//                music.setFromServer(true);
+//            }
+//
+//            musicList.add(music);
+//        }
+//        cursor.close();
+//        closeDatabase();
+//        return musicList;
+//    }
 
     /**
      * 删除某条记录

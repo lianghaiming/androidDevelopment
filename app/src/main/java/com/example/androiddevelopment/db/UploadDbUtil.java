@@ -5,10 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.duzun.player.bean.LocalMusic;
-import com.duzun.player.utils.Utils;
+import com.example.androiddevelopment.util.Utils;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -74,26 +72,26 @@ public class UploadDbUtil {
         return false;
     }
 
-    public ArrayList<LocalMusic> queryAll(){
-        Cursor query = openSQLiteDatabase().query(TABLE_NAME,null,null,
-                null, null, null, null);
-
-        ArrayList<LocalMusic> musicList = new ArrayList<>();
-        while (query.moveToNext()){
-
-            LocalMusic music = new LocalMusic();
-            music.setSongName(query.getString(query.getColumnIndex(SONGNAME)));
-            music.setUrl(query.getString(query.getColumnIndex(SONGPATH)));
-            music.setAuthor(query.getString(query.getColumnIndex(SONGAUTHOR)));
-            music.setUpload(true);
-            music.setProcess(100);
-            musicList.add(music);
-        }
-
-        query.close();
-        closeDatabase();
-        return musicList;
-    }
+//    public ArrayList<LocalMusic> queryAll(){
+//        Cursor query = openSQLiteDatabase().query(TABLE_NAME,null,null,
+//                null, null, null, null);
+//
+//        ArrayList<LocalMusic> musicList = new ArrayList<>();
+//        while (query.moveToNext()){
+//
+//            LocalMusic music = new LocalMusic();
+//            music.setSongName(query.getString(query.getColumnIndex(SONGNAME)));
+//            music.setUrl(query.getString(query.getColumnIndex(SONGPATH)));
+//            music.setAuthor(query.getString(query.getColumnIndex(SONGAUTHOR)));
+//            music.setUpload(true);
+//            music.setProcess(100);
+//            musicList.add(music);
+//        }
+//
+//        query.close();
+//        closeDatabase();
+//        return musicList;
+//    }
     /**
      * 关闭数据库
      */

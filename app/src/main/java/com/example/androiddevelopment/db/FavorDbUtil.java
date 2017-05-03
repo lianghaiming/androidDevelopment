@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.duzun.player.utils.Utils;
+import com.example.androiddevelopment.util.Utils;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
