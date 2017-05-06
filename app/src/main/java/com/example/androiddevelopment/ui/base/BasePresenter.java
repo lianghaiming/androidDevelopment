@@ -1,5 +1,7 @@
 package com.example.androiddevelopment.ui.base;
 
+import com.example.androiddevelopment.interactor.BaseInteractor;
+
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
@@ -8,6 +10,8 @@ import java.lang.ref.WeakReference;
  */
 public class BasePresenter<V> {
     public BaseActivity mContext;
+
+    protected BaseInteractor mInteractor;
 
     public BasePresenter(BaseActivity context) {
         mContext = context;

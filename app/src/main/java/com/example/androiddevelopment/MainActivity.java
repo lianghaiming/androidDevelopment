@@ -9,7 +9,9 @@ import android.widget.ImageView;
 
 import com.example.androiddevelopment.model.LoginRequest;
 import com.example.androiddevelopment.model.LoginResponse;
+import com.example.androiddevelopment.model.UserListResponse;
 import com.example.androiddevelopment.network.AppNetWork;
+import com.example.androiddevelopment.util.FileUtil;
 import com.example.androiddevelopment.util.LogUtil;
 
 import java.io.File;
@@ -18,7 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -38,6 +44,63 @@ public class MainActivity extends AppCompatActivity {
 
         photo = (ImageView)findViewById(R.id.image);
 
+
+
+//        LoginRequest loginRequest = new LoginRequest("liang", "123456");
+//        RxBus.getDefault().post(loginRequest);
+//        LogUtil.print("had send....");
+//
+//        RxBus.getDefault().tObservable(LoginRequest.class).observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new OnNextSubscriber<LoginRequest>() {
+//                    @Override
+//                    public void onNext(LoginRequest loginRequest) {
+//
+//                        LogUtil.print("rxbus " + loginRequest.account + " " + loginRequest.password);
+//                    }
+//                });
+        getUser();
+    }
+
+//    private void getUser() {
+//        AppNetWork.INSTANCE.getNetApi().getUserList()
+//                .subscribeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<List<User>>() {
+//                    @Override
+//                    public void call(List<User1> users) {
+//                           for(User user1 : users) {
+//                            LogUtil.print(user1.toString());
+//                        }
+//                    }
+//                });
+//    }
+
+    private void getUser() {
+        AppNetWork.INSTANCE.getNetApi().getUserList()
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<UserListResponse>() {
+                    @Override
+                    public void call(UserListResponse userListResponse) {
+                        LogUtil.print(userListResponse.toString());
+                    }
+                });
+    }
+
+//    private void getUser() {
+//        AppNetWork.INSTANCE.getNetApi().getUserList()
+//                .subscribeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<String>() {
+//                    @Override
+//                    public void call(String s) {
+//                        LogUtil.print(s);
+//                    }
+//                });
+//    }
+
+
+    private void net2() {
         AppNetWork.INSTANCE.getNetApi().getPhoto("image/hello.png")
                 .subscribeOn(Schedulers.newThread())
                 .map(new Func1<ResponseBody, Bitmap>() {
@@ -65,9 +128,10 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+    }
 
-//
-        AppNetWork.INSTANCE.getNetApi().login(AppNetWork.INSTANCE.getRequestBody(new LoginRequest("楚留香", "123465")))
+    private void net1() {
+                AppNetWork.INSTANCE.getNetApi().login(AppNetWork.INSTANCE.getRequestBody(new LoginRequest("楚留香", "123465")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<LoginResponse>() {
@@ -76,9 +140,36 @@ public class MainActivity extends AppCompatActivity {
                         LogUtil.print("code " + loginResponse.code + " token " + loginResponse.token);
                     }
                 });
+    }
 
-//        getThread.start();
-        }
+
+    private void upLoad() {
+        File file = new File(FileUtil.getDirectory(), "icon.png");
+        String token = "AAABBB";
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("AAAAAA", token);
+        RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        builder.addFormDataPart("imgfile", file.getName(), imageBody);
+
+        List<MultipartBody.Part> parts = builder.build().parts();
+
+        AppNetWork.INSTANCE.getNetApi().upLoadPhoto(parts)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<ResponseBody>() {
+                    @Override
+                    public void call(ResponseBody responseBody) {
+                        byte[] ret = new byte[100];
+                        try {
+                            LogUtil.print(responseBody.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+    }
 
 
     private Thread getThread = new Thread(){
